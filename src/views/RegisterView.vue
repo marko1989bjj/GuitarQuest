@@ -7,11 +7,14 @@ import { doc, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@/firebase/firebase";
 
+import { Eye, EyeOff } from "lucide-vue-next";
+
 const router = useRouter();
 
 const name = ref("");
 const email = ref("");
 const password = ref("");
+const showPassword = ref(false);
 const error = ref("");
 
 const registerUser = async () => {
@@ -48,7 +51,6 @@ const registerUser = async () => {
     router.push("/dashboard");
   } catch (err) {
     console.error(err);
-
     error.value = "Registration failed.";
   }
 };
@@ -77,7 +79,7 @@ const registerUser = async () => {
         Create your account and start learning.
       </p>
 
-      <div class="space-y-5">
+      <form @submit.prevent="registerUser" class="space-y-5">
         <input
           v-model="name"
           type="text"
@@ -92,15 +94,26 @@ const registerUser = async () => {
           class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-amber-400"
         />
 
-        <input
-          v-model="password"
-          type="password"
-          placeholder="Password"
-          class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-amber-400"
-        />
+        <div class="relative">
+          <input
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Password"
+            class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 pr-12 outline-none transition focus:border-amber-400"
+          />
+
+          <button
+            type="button"
+            @click="showPassword = !showPassword"
+            class="absolute inset-y-0 right-3 flex items-center text-slate-400 transition hover:text-amber-400"
+          >
+            <Eye v-if="!showPassword" :size="20" />
+            <EyeOff v-else :size="20" />
+          </button>
+        </div>
 
         <button
-          @click="registerUser"
+          type="submit"
           class="w-full rounded-xl bg-amber-400 py-3 font-bold text-black transition hover:bg-amber-300"
         >
           Register
@@ -117,7 +130,7 @@ const registerUser = async () => {
             Login
           </RouterLink>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
