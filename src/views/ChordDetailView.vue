@@ -67,6 +67,10 @@ const saveChordStatus = async (status) => {
   }
 };
 
+const imageUrl = (image) => {
+  return `${import.meta.env.BASE_URL}${image.replace(/^\/+/, "")}`;
+};
+
 onMounted(() => {
   loadChord();
   loadChordStatus();
@@ -100,7 +104,7 @@ onMounted(() => {
           class="flex w-full max-w-xl justify-center rounded-xl bg-white p-4 shadow-inner sm:p-8"
         >
           <img
-            :src="chord.image"
+            :src="imageUrl(chord.image)"
             :alt="chord.name"
             class="max-h-72 object-contain sm:max-h-80"
           />
